@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Coordinates from "./Coordinates";
+import Coordinates from "../types/Coordinates";
 
 export default class HexagonTile {
 	private coordinates: Coordinates;

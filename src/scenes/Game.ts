@@ -1,7 +1,7 @@
 import Phaser from "phaser";
-import Coordinates from "../objects/Coordinates";
+import Coordinates from "../types/Coordinates";
 import HexagonTile from "../objects/HexagonTile";
-import MainCamera from "./MainCamera";
+import MainCamera from "../objects/MainCamera";
 
 declare global {
 	var scene: Phaser.Scene;

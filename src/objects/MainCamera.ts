@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Coordinates from "../objects/Coordinates";
+import Coordinates from "../types/Coordinates";
 
 export default class MainCamera {
 	private pointerStart?: Coordinates;
