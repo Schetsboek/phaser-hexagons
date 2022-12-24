@@ -727,6 +727,11 @@
   dependencies:
     "brace-expansion" "^1.1.7"
 
+"mrpas@^2.0.0":
+  "integrity" "sha512-f9Qv0DzYzPfWAIYQWT5zswHen8YDOrQ96KjQ54Nx7Zha8oLCt0c82L/PpmXyAvMNhrciZmQGbvg+m+QaK4B7Uw=="
+  "resolved" "https://registry.npmjs.org/mrpas/-/mrpas-2.0.0.tgz"
+  "version" "2.0.0"
+
 "ms@2.1.2":
   "integrity" "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w=="
   "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
