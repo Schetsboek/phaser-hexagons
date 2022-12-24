@@ -11,8 +11,8 @@ export default class SquareShadowTile extends ShadowTile {
 	public static readonly width: number = 42;
 	public static readonly height: number = 42;
 
-	constructor(coordinates: Coordinates, position: Position, shadowCoords: Coordinates) {
-		super(Math.random() < 0.5);
+	constructor(coordinates: Coordinates, position: Position, shadowCoords: Coordinates, type: number) {
+		super(type === 0);
 
 		this.coordinates = coordinates;
 
@@ -30,11 +30,11 @@ export default class SquareShadowTile extends ShadowTile {
 
 		const xOffset = position === Position.Left ? -21 : 21;
 		const any = this.group
-			.create(this.center.x + xOffset, this.center.y + 36.5, texture)
+			.create(this.center.x + xOffset, this.center.y + 35.5, texture)
 			.setDepth(1)
 			.setInteractive({ pixelPerfect: true });
 
-		this.group.setVisible(false);
+		// this.group.setVisible(false);
 
 		any.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
 			if (pointer.leftButtonDown()) {

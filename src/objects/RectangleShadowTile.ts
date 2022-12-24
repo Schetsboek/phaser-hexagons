@@ -11,8 +11,8 @@ export default class RectangleShadowTile extends ShadowTile {
 	public static readonly width: number = 42;
 	public static readonly height: number = 31;
 
-	constructor(coordinates: Coordinates, position: Position, shadowCoords: Coordinates) {
-		super(Math.random() < 0.5);
+	constructor(coordinates: Coordinates, position: Position, shadowCoords: Coordinates, type: number) {
+		super(type === 0);
 
 		this.coordinates = coordinates;
 
@@ -34,7 +34,7 @@ export default class RectangleShadowTile extends ShadowTile {
 			.setDepth(1)
 			.setInteractive({ pixelPerfect: true });
 
-		this.group.setVisible(false);
+		// this.group.setVisible(false);
 
 		any.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
 			if (pointer.leftButtonDown()) {

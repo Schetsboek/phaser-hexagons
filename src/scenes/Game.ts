@@ -18,6 +18,7 @@ export default class Hexagons extends Phaser.Scene {
 	private mainCamera?: MainCamera;
 	private tiles: Map<Coordinates, HexagonTile>;
 	private shadowTiles: ShadowTile[][];
+	private map: number[][];
 	private fov?: Mrpas;
 
 	constructor() {
@@ -25,6 +26,24 @@ export default class Hexagons extends Phaser.Scene {
 		globalThis.scene = this;
 		this.tiles = new Map<Coordinates, HexagonTile>();
 		this.shadowTiles = [[]];
+		this.map = [
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		];
 	}
 
 	preload() {
@@ -40,8 +59,10 @@ export default class Hexagons extends Phaser.Scene {
 		// this.input.mouse.disableContextMenu();
 		this.mainCamera = new MainCamera(this.cameras.main);
 
-		const verticalHexagonTileCount = (document.body.clientHeight + HexagonTile.heightOffset) / HexagonTile.height;
-		const horizontalHexagonTileCount = (document.body.clientWidth + HexagonTile.widthOffset) / HexagonTile.width;
+		// const verticalHexagonTileCount = (document.body.clientHeight + HexagonTile.heightOffset) / HexagonTile.height;
+		// const horizontalHexagonTileCount = (document.body.clientWidth + HexagonTile.widthOffset) / HexagonTile.width;
+		const verticalHexagonTileCount = this.map.length / 2;
+		const horizontalHexagonTileCount = this.map[0].length / 2;
 
 		for (let y = 0; y < verticalHexagonTileCount; y++) {
 			for (let x = 0; x < horizontalHexagonTileCount; x++) {
@@ -58,16 +79,37 @@ export default class Hexagons extends Phaser.Scene {
 					if (!this.shadowTiles[xLeft]) {
 						this.shadowTiles[xLeft] = [];
 					}
-					rectangleLeft = new RectangleShadowTile(new Coordinates(x, y), Position.Left, new Coordinates(xLeft, y * 2));
-					squareLeft = new SquareShadowTile(new Coordinates(x, y), Position.Left, new Coordinates(xLeft, y * 2 + 1));
+					rectangleLeft = new RectangleShadowTile(
+						new Coordinates(x, y),
+						Position.Left,
+						new Coordinates(xLeft, y * 2),
+						this.map[y * 2][xLeft],
+					);
+					squareLeft = new SquareShadowTile(
+						new Coordinates(x, y),
+						Position.Left,
+						new Coordinates(xLeft, y * 2 + 1),
+						this.map[y * 2 + 1][xLeft],
+					);
 					this.shadowTiles[xLeft][y * 2] = rectangleLeft;
 					this.shadowTiles[xLeft][y * 2 + 1] = squareLeft;
 				}
 				if (!this.shadowTiles[xRight]) {
 					this.shadowTiles[xRight] = [];
 				}
-				rectangleRight = new RectangleShadowTile(new Coordinates(x, y), Position.Right, new Coordinates(xRight, y * 2));
-				squareRight = new SquareShadowTile(new Coordinates(x, y), Position.Right, new Coordinates(xRight, y * 2 + 1));
+				console.log(xLeft);
+				rectangleRight = new RectangleShadowTile(
+					new Coordinates(x, y),
+					Position.Right,
+					new Coordinates(xRight, y * 2),
+					this.map[y * 2][xRight],
+				);
+				squareRight = new SquareShadowTile(
+					new Coordinates(x, y),
+					Position.Right,
+					new Coordinates(xRight, y * 2 + 1),
+					this.map[y * 2 + 1][xRight],
+				);
 				this.shadowTiles[xRight][y * 2] = rectangleRight;
 				this.shadowTiles[xRight][y * 2 + 1] = squareRight;
 
@@ -83,41 +125,36 @@ export default class Hexagons extends Phaser.Scene {
 
 		new Token(new Coordinates(4, 4));
 
-		this.fov = new Mrpas(
-			Math.ceil(horizontalHexagonTileCount) * 2 - 1,
-			Math.ceil(verticalHexagonTileCount) * 2,
-			(x, y) => {
-				const tile = this.shadowTiles[x][y];
-				return tile && tile.getIsTransparent();
-			},
-		);
+		// this.fov = new Mrpas(
+		// 	Math.ceil(horizontalHexagonTileCount) * 2 - 1,
+		// 	Math.ceil(verticalHexagonTileCount) * 2,
+		// 	(x, y) => {
+		// 		const tile = this.shadowTiles[x][y];
+		// 		return tile && tile.getIsTransparent();
+		// 	},
+		// );
 
-		this.fov.compute(
-			8,
-			8,
-			10,
-			(x, y) => {
-				const tile = this.shadowTiles[x][y];
-				return tile && tile.getVisibility();
-			},
-			(x, y) => {
-				const tile = this.shadowTiles[x][y];
-				tile.setVisibility(true);
-			},
-		);
-		this.fov.compute(
-			9,
-			8,
-			10,
-			(x, y) => {
-				const tile = this.shadowTiles[x][y];
-				return tile && tile.getVisibility();
-			},
-			(x, y) => {
-				const tile = this.shadowTiles[x][y];
-				tile.setVisibility(true);
-			},
-		);
+		// const lightRenders: Coordinates[] = [
+		// 	new Coordinates(8, 8),
+		// 	new Coordinates(9, 8),
+		// 	new Coordinates(2, 2),
+		// 	new Coordinates(3, 2),
+		// ];
+		// for (let i = 0; i < lightRenders.length; i++) {
+		// 	this.fov.compute(
+		// 		lightRenders[i].x,
+		// 		lightRenders[i].y,
+		// 		10,
+		// 		(x, y) => {
+		// 			const tile = this.shadowTiles[x][y];
+		// 			return tile && tile.getVisibility();
+		// 		},
+		// 		(x, y) => {
+		// 			const tile = this.shadowTiles[x][y];
+		// 			tile.setVisibility(true);
+		// 		},
+		// 	);
+		// }
 	}
 
 	update(time: number, delta: number): void {
